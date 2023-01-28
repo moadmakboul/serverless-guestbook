@@ -1,22 +1,20 @@
-/**
- * Web application
- */
-const apiUrl = '';
-const guestbook = {
+const apiUrl = 'https://eu-de.functions.appdomain.cloud/api/v1/web/76f81f89-4937-47e1-aa33-4d571e9474ac/guestbook';
+const guestbook = {  
   // retrieve the existing guestbook entries
   get() {
     return $.ajax({
       type: 'GET',
-      url: `${apiUrl}/entries`,
+      url: `${apiUrl}/read-guestbook-entries-sequence.json`,
       dataType: 'json'
     });
   },
+  
   // add a single guestbood entry
   add(name, email, comment) {
     console.log('Sending', name, email, comment)
     return $.ajax({
       type: 'PUT',
-      url: `${apiUrl}/entries`,
+      url: `${apiUrl}/save-guestbook-entry-sequence.json`,
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify({
         name,
@@ -29,7 +27,6 @@ const guestbook = {
 };
 
 (function() {
-
   let entriesTemplate;
 
   function prepareTemplates() {
@@ -44,7 +41,6 @@ const guestbook = {
       if (!result.entries) {
         return;
       }
-
       const context = {
         entries: result.entries
       }
@@ -59,7 +55,7 @@ const guestbook = {
   // reload entries on success
   $(document).on('submit', '#addEntry', function(e) {
     e.preventDefault();
-
+  
     guestbook.add(
       $('#name').val().trim(),
       $('#email').val().trim(),
